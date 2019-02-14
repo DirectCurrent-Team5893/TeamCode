@@ -72,7 +72,7 @@ public class AutowithDogeCV extends LinearOpMode {
     private static final int MOVE_JEWEL = 1600;
     private static final double LANDER_CATCH_UP = 0.75;
     private static final double LANDER_CATCH_DOWN = 0;
-    private static final int SHORTER_BACK = -200;
+    private static final int SHORTER_BACK = -300;
     private static final int SHORT_FORWARD = 100;
     public double Time;
 
@@ -150,7 +150,7 @@ public class AutowithDogeCV extends LinearOpMode {
         moveStraight(2000,"KnockJewelOff");
         if(Time<2.8)
         {
-            RightDrive(450, "face base");
+
             moveStraight(1500,"Get to base");
             while(runtime.time()<0.25)
             {

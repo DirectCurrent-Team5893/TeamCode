@@ -39,9 +39,9 @@
                  import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-                 @Autonomous(name="AutoWithDogeCVCrater", group="DogeCV")
+                 @Autonomous(name="Aut0WithDogeCVCrater", group="DogeCV")
 
-                 public class AutoWithDogeCVCrater extends LinearOpMode {
+                 public class Aut0withDogeCV extends LinearOpMode {
                      // Detector object
 
                      private GoldAlignDetector detector;
@@ -89,7 +89,6 @@
                          landerStopper = hardwareMap.servo.get("Lander_Stop");
 
 
-
                          leftDrive.setDirection(DcMotor.Direction.FORWARD);
                          rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
@@ -116,119 +115,21 @@
 
                          waitForStart();
 
-                        lander_Run(LAND_ROBOT,"Land The Robot");
-                         moveStraight(SHORTER_BACK,"Unhook");
-                         moveStraight(SHORT_FORWARD," Short back ");
+                         //lander_Run(LAND_ROBOT, "Land The Robot");
+                         moveStraight(SHORTER_BACK, "Unhook");
+                         moveStraight(SHORT_FORWARD, " Short back ");
 
-                         RightDrive(-350,"getting off");
-                         moveStraight(SHORTER_BACK,"Not get stuck");
-                        lander_Run(-2*(LAND_ROBOT)/3,"Land The Robot");
-                         currentPosition = rightDrive.getCurrentPosition() ;
-                         moveStraight(200,"not hit leg of crater");
-                         RotateInPlace(300,"1st Position");
+                         RightDrive(-350, "getting off");
+                         moveStraight(SHORTER_BACK, "Not get stuck");
+                         //lander_Run(-2 * (LAND_ROBOT) / 3, "Land The Robot");
+                         currentPosition = rightDrive.getCurrentPosition();
+
                          runtime.reset();
-                         while(!detector.getAligned() && runtime.time()<=1)
+                         while(detector.isFound())
                          {
-                             rightDrive.setPower(.3);
-                             leftDrive.setPower(-.3);
-                             newPosition = rightDrive.getCurrentPosition() ;
-                             telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
-                             telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
-                             telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
-
-
+                          rightDrive.setPower(0.25);
+                          leftDrive.setPower(-0.25);
                          }
-                         if(detector.getAligned() && goldPos == 0)
-                         {
-                             goldPos = 1;
-                             rightDrive.setPower(0);
-                             leftDrive.setPower(0);
-                         }else if(!detector.getAligned()) {
-
-                             RotateInPlace(300, "1st Position");
-                             runtime.reset();
-                             while (!detector.getAligned() && runtime.time() <= 1) {
-
-                                 rightDrive.setPower(.3);
-                                 leftDrive.setPower(-.3);
-                                 newPosition = rightDrive.getCurrentPosition();
-                                 telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
-                                 telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
-                                 telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
-
-
-                             }
-                             if (detector.getAligned() && goldPos == 0) {
-                                 goldPos = 2;
-                                 RotateInPlace(350,"not hit other");
-                                 rightDrive.setPower(0);
-                                 leftDrive.setPower(0);
-                             } else if (!detector.getAligned()) {
-
-                                 RotateInPlace(300, "2st Position");
-                                 runtime.reset();
-                                 while (!detector.getAligned() && runtime.time() <= 1) {
-
-                                     rightDrive.setPower(-.3);
-                                     leftDrive.setPower(-.3);
-                                     newPosition = rightDrive.getCurrentPosition();
-                                     telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
-                                     telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
-                                     telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
-
-
-                                 }
-                                 telemetry.addLine("3rd Position"); // Gold X position.
-                                 if (detector.getAligned() && goldPos==0) {
-                                     goldPos = 3;
-                                     rightDrive.setPower(0);
-                                     leftDrive.setPower(0);
-                                 }
-//                         Time = runtime.time();
-                                 detector.disable();
-                             }
-                             rightDrive.setPower(STOP_MOTOR);
-                             telemetry.addData("Pos at TIme", Time); // Gold X position.
-//                         if  (runtime.time() > 2.5)
-//                         {
-//                             goldPos = 3;
-//                             RightDrive(250,"getting off");
-//                             telemetry.addData("Time", runtime.time() ); // Gold X position.
-//
-//                         }
-                             telemetry.addData("Pos rightDrive", rightDrive.getCurrentPosition()); // Gold X position.
-                             moveStraight(2000, "KnockJewelOff");
-                          //   lander_Run(-LAND_ROBOT/3,"yeet");
-//                         if(goldPos==3){
-//                             RotateInPlace(250,"Not Point Out");
-//                         }
-//
-//
-//                         runtime.reset();
-//                         while(runtime.time()<1.5)
-//                         {
-//                             collectorAngle.setPower(1);
-//                         }
-//
-//
-//                         runtime.reset();
-//                         while(runtime.time()<1.25 && goldPos != 3)
-//                         {
-//                             linearExtender.setPower(1);
-//                         }
-//                            if(goldPos == 3)
-//                            {
-//                                RotateInPlace(500,"not point out");
-//                                runtime.reset();
-//                                while(runtime.time()<1.25)
-//                                {
-//                                    linearExtender.setPower(1);
-//                                }
-//                            }
-                             //RotateInPlace(500,"get in depot");
-
-                         }
-
                      }
 
 
@@ -258,50 +159,51 @@
                          int target_Right = initialRight + target_interval;
 
                          int target_Left = initialLeft - target_interval;
-                        if(!detector.getAligned()) {
-                            if (initialRight < target_Right) {
-                                while (rightDrive.getCurrentPosition() < target_Right) {
-                                    rightDrive.setPower(DRIVE_POWER);
-                                    leftDrive.setPower(-DRIVE_POWER);
 
-                                    telemetry.addData("Run", "Time:   " + runtime.toString());
-                                    telemetry.addLine(Status);
-                                    telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
-                                    telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
-                                    telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
+                         if (initialRight < target_Right) {
+                             while (rightDrive.getCurrentPosition() < target_Right ) {
+                                 rightDrive.setPower(DRIVE_POWER);
+                                 leftDrive.setPower(-DRIVE_POWER);
 
-                                    telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
-                                    telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
-                                    telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
+                                 telemetry.addData("Run", "Time:   " + runtime.toString());
+                                 telemetry.addLine(Status);
+                                 telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
+                                 telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
+                                 telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
 
-                                    telemetry.update();
-                                }
-                                rightDrive.setPower(0);
-                                leftDrive.setPower(0);
-                            } else if (initialRight > target_Right) {
-                                while (rightDrive.getCurrentPosition() > target_Right && leftDrive.getCurrentPosition() < target_Left) {
-                                    rightDrive.setPower(-DRIVE_POWER);
-                                    leftDrive.setPower(DRIVE_POWER);
+                                 telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
+                                 telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
+                                 telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
 
-                                    telemetry.addData("Run", "Time:   " + runtime.toString());
-                                    telemetry.addLine(Status);
-                                    telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
-                                    telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
-                                    telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
+                                 telemetry.update();
+                             }
+                             rightDrive.setPower(0);
+                             leftDrive.setPower(0);
+                         }else if(initialRight>target_Right)
+                         {
+                             while (rightDrive.getCurrentPosition() > target_Right && leftDrive.getCurrentPosition() < target_Left) {
+                                 rightDrive.setPower(-DRIVE_POWER);
+                                 leftDrive.setPower(DRIVE_POWER);
 
-                                    telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
-                                    telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
-                                    telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
+                                 telemetry.addData("Run", "Time:   " + runtime.toString());
+                                 telemetry.addLine(Status);
+                                 telemetry.addData("initialLeft", "Left Motor Position:  " + initialLeft);
+                                 telemetry.addData("CurrentLeftPosition", "Current Pos:  " + leftDrive.getCurrentPosition());
+                                 telemetry.addData("TargetLeft", "Target Left Position:  " + target_Left);
 
-                                    telemetry.update();
-                                }
-                                rightDrive.setPower(0);
-                                leftDrive.setPower(0);
-                            } else if (target_Right == rightDrive.getCurrentPosition()) {
-                                rightDrive.setPower(0);
-                                leftDrive.setPower(0);
-                            }
-                        }
+                                 telemetry.addData("initialRight", "Right Motor Position:  " + initialRight);
+                                 telemetry.addData("CurrentRightPosition", "Current Pos:  " + rightDrive.getCurrentPosition());
+                                 telemetry.addData("TargetRight", "Target Right Position:  " + target_Right);
+
+                                 telemetry.update();
+                             }
+                             rightDrive.setPower(0);
+                             leftDrive.setPower(0);
+                         }else if (target_Right == rightDrive.getCurrentPosition())
+                         {
+                             rightDrive.setPower(0);
+                             leftDrive.setPower(0);
+                         }
                      }
 
                      public void moveStraight(int target_interval, String Status) {
