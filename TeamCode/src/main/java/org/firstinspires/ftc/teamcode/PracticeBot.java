@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
-@TeleOp(name="TeleOp2", group="Linear Opmode")
+@TeleOp(name="PracticeBot", group="Linear Opmode")
 public class PracticeBot extends LinearOpMode {
 
     // Declare OpMode members.
@@ -47,12 +47,12 @@ public class PracticeBot extends LinearOpMode {
 
 
 
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        collectorLift = hardwareMap.get(DcMotor.class, "Lander_Lift");
-        lCheeseWheel = hardwareMap.get(DcMotor.class, "Linear_Extension");
-        rCheeseWheel = hardwareMap.get(DcMotor.class, "Collector_Angle");
-        collectorTrack = hardwareMap.get(DcMotor.class, "Collector_Spinner");
+        leftDrive  = hardwareMap.get(DcMotor.class, "ld");
+        rightDrive = hardwareMap.get(DcMotor.class, "rd");
+        collectorLift = hardwareMap.get(DcMotor.class, "ll");
+        lCheeseWheel = hardwareMap.get(DcMotor.class, "le");
+        rCheeseWheel = hardwareMap.get(DcMotor.class, "ca");
+        collectorTrack = hardwareMap.get(DcMotor.class, "cs");
 
 
         jewelPlank = hardwareMap.servo.get("Lander_Stop");
@@ -63,6 +63,8 @@ public class PracticeBot extends LinearOpMode {
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         collectorLift.setDirection(DcMotor.Direction.REVERSE);
+collectorTrack.setDirection(DcMotor.Direction.REVERSE);
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -93,10 +95,10 @@ public class PracticeBot extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad2.left_stick_y;
-            double turn  =  gamepad2.right_stick_x;
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            double drive = -gamepad1.left_stick_y;
+            double turn  =  gamepad1.right_stick_x;
+            leftPower    = Range.clip(drive - turn, -1.0, 1.0) ;
+            rightPower   = Range.clip(drive + turn, -1.0, 1.0) ;
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower*speedMultiplier);
